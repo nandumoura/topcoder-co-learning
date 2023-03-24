@@ -5,6 +5,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 
 // components
 import App from "./App";
+import { AuthProvider } from "./AuthContext";
 import UnloggedPage from "./pages/UnloggedPage";
 import Profile from "./pages/Profile";
 import PageNotFound from "./pages/PageNotFound";
@@ -40,7 +41,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ChakraProvider>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </ChakraProvider>
   </React.StrictMode>
 );

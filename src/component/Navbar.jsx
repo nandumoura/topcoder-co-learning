@@ -1,7 +1,9 @@
 import { Box, Flex, Spacer, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom"; // se estiver usando React Router
-
+import { useAuthValue } from "../AuthContext";
 const Navbar = () => {
+  const currentUser = useAuthValue();
+
   return (
     <Flex alignItems="center" backgroundColor="gray.200" p={4}>
       <Box>

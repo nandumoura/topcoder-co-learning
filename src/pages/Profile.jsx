@@ -1,9 +1,11 @@
 import { Box, Divider, Flex, Avatar, Badge, Text } from "@chakra-ui/react";
 import Navbar from "../component/Navbar";
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useAuthValue } from "../AuthContext";
 function Profile() {
+  const currentUser = useAuthValue() || {};
+
   let name = localStorage.getItem("name");
   let navigate = useNavigate();
   useEffect(() => {
@@ -35,6 +37,7 @@ function Profile() {
         <Box ml="3">
           <Text fontWeight="bold">
             {name}
+
             <Badge ml="1" colorScheme="green">
               New
             </Badge>
