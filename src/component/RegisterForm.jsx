@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { firebaseApp } from "../firebase-config";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase-config";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -15,9 +15,10 @@ import {
   AlertDescription,
 } from "@chakra-ui/react";
 
-const SignInForm = () => {
+const RegisterForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -29,24 +30,40 @@ const SignInForm = () => {
     setIsSubmitting(true);
     setShowError(false);
 
-    const authentication = getAuth(firebaseApp);
-    createUserWithEmailAndPassword(authentication, email, password)
-      .then((response) => {
-        localStorage.setItem("name", name);
-        localStorage.setItem(
-          "Auth Token",
-          response._tokenResponse.refreshToken
-        );
-        setIsSubmitting(false);
-        navigate("/home");
-      })
-      .catch((error) => {
-        setTypeError(error.message);
+    if (validatePassword()) {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((response) => {
+          localStorage.setItem("name", name);
+          localStorage.setItem(
+            "Auth Token",
+            response._tokenResponse.refreshToken
+          );
+          setIsSubmitting(false);
+          navigate("/home");
+        })
+        .catch((error) => {
+          setTypeError(error.message);
+          setShowError(true);
+        })
+        .finally(() => {});
+    }
+    setName("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setIsSubmitting(false);
+  };
+
+  const validatePassword = () => {
+    let isValid = true;
+    if (password !== "" && confirmPassword !== "") {
+      if (password !== confirmPassword) {
+        isValid = false;
+        setTypeError("Passwords does not match");
         setShowError(true);
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
+      }
+    }
+    return isValid;
   };
 
   return (
@@ -83,6 +100,14 @@ const SignInForm = () => {
             onChange={(event) => setPassword(event.target.value)}
           />
         </FormControl>
+        <FormControl id="password2">
+          <FormLabel>Confirm Password</FormLabel>
+          <Input
+            type="password"
+            value={confirmPassword}
+            onChange={(event) => setConfirmPassword(event.target.value)}
+          />
+        </FormControl>
         <Button type="submit" isLoading={isSubmitting}>
           Sign in
         </Button>
@@ -91,4 +116,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default RegisterForm;

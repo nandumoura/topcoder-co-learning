@@ -1,5 +1,5 @@
 import { Box, Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
-import SignInForm from "../component/SignInForm";
+import RegisterForm from "../component/RegisterForm";
 import LoginForm from "../component/LoginForm";
 
 function UnloggedPage() {
@@ -23,7 +23,7 @@ function UnloggedPage() {
 
         <TabPanels>
           <TabPanel>
-            <SignInForm />
+            <RegisterForm />
           </TabPanel>
           <TabPanel>
             <LoginForm />
