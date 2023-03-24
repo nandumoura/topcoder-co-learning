@@ -1,5 +1,5 @@
 import data from "./utils/data";
-import React, { useEffect, useState } from "react";
+
 import { useNavigate } from "react-router-dom";
 import { useAuthValue } from "./AuthContext";
 import {
@@ -9,15 +9,16 @@ import {
   Heading,
   CardBody,
   Text,
-  Grid,
   Link,
   Stack,
-  GridItem,
   StackDivider,
 } from "@chakra-ui/react";
-import CourseCard from "./component/CourseCard";
+// my componentes
+import SpaceScreen from "./component/SpaceScreen";
+import GridCards from "./component/GridCards";
 
 function App() {
+  const isPageInitial = false;
   const currentUser = useAuthValue() || {};
   let navigate = useNavigate();
   console.log(data[0].node.courseImage.gatsbyImageData.images.fallback.src);
@@ -55,27 +56,7 @@ function App() {
           </Box>
         </CardBody>
       </Card>
-      <Box display="grid" gridGap={2} gridAutoFlow="row dense">
-        <Heading size="md" textAlign={"center"}>
-          {" "}
-          Co-learning Spaces section
-        </Heading>
-        <Grid templateColumns="repeat(3, 1fr)" gap={6} padding={4}>
-          {data.map((node) => {
-            return (
-              <CourseCard
-                key={node.node.youtubePreviewId}
-                name={node.node.courseTitle}
-                updatedAt={node.node.createdAt}
-                imgSrc={
-                  node.node.courseImage.gatsbyImageData.images.fallback.src
-                }
-                courseUrl={node.node.courseUrl}
-              />
-            );
-          })}
-        </Grid>
-      </Box>
+      {isPageInitial ? <GridCards /> : <SpaceScreen />}
     </Box>
   );
 }
