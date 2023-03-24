@@ -1,8 +1,13 @@
 import { Box, Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import RegisterForm from "../component/RegisterForm";
 import LoginForm from "../component/LoginForm";
+import { useAuthValue } from "../AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function UnloggedPage() {
+  let navigate = useNavigate();
+  const currentUser = useAuthValue() || {};
+  currentUser.email ? navigate("/") : "";
   return (
     <Box
       borderRadius="md"
