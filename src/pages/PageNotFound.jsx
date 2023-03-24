@@ -10,7 +10,7 @@ const PageNotFound = () => {
       <Text fontSize="2xl" textAlign="center" mb={8}>
         It looks like you've wandered off the beaten path.
       </Text>
-      <Button as={Link} to="/app" size="lg">
+      <Button as={Link} to="/ " size="lg">
         Take Me Home
       </Button>
     </Center>
