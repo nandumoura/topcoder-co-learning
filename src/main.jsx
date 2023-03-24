@@ -2,7 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
-// componentes
+
+// components
 import App from "./App";
 import UnloggedPage from "./pages/UnloggedPage";
 import Profile from "./pages/Profile";
@@ -12,6 +13,11 @@ import LearningSpace from "./pages/LearningSpace";
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <App />,
+    errorElement: <PageNotFound />,
+  },
+  {
+    path: "/login",
     element: <UnloggedPage />,
     errorElement: <PageNotFound />,
   },
