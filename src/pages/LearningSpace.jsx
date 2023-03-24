@@ -1,14 +1,15 @@
 import { Box, Text } from "@chakra-ui/react";
 import React, { useEffect } from "react";
+
+import { useAuthValue } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../component/Navbar";
+
 function LearningSpace() {
+  const currentUser = useAuthValue() || {};
   let navigate = useNavigate();
   useEffect(() => {
-    let authToken = localStorage.getItem("Auth Token");
-    if (!authToken) {
-      navigate("/");
-    }
+    currentUser.email ? "" : navigate("/");
   }, []);
   return (
     <Box

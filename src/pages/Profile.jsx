@@ -9,10 +9,7 @@ function Profile() {
   let name = localStorage.getItem("name");
   let navigate = useNavigate();
   useEffect(() => {
-    let authToken = localStorage.getItem("Auth Token");
-    if (!authToken) {
-      navigate("/");
-    }
+    currentUser.email ? "" : navigate("/");
   }, []);
   return (
     <Box
