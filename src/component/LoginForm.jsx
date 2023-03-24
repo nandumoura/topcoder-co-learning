@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { firebaseApp } from "../firebase-config";
+import auth from "../firebase-config";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import {
   FormControl,
@@ -27,19 +27,20 @@ const LoginForm = () => {
     setIsSubmitting(true);
     setShowError(false);
 
-    const authentication = getAuth(firebaseApp);
-    signInWithEmailAndPassword(authentication, email, password)
+    signInWithEmailAndPassword(auth, email, password)
       .then((response) => {
         localStorage.setItem(
           "Auth Token",
           response._tokenResponse.refreshToken
         );
-        setIsSubmitting(false);
         navigate("/home");
       })
       .catch((error) => {
         setTypeError(error.message);
         setShowError(true);
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
   };
 
