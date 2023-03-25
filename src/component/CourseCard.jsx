@@ -11,7 +11,6 @@ import {
   Link,
   Button,
 } from "@chakra-ui/react";
-import formatDate from "../utils/format-data";
 
 function CourseCard(props) {
   return (
@@ -25,13 +24,13 @@ function CourseCard(props) {
         <Stack mt="6" spacing="3">
           <Heading size="md">{props.name}</Heading>
           <Text display="flex" color="teal.400" fontSize="2xl">
-            250{" "}
-            <Text pl="8px" color="teal.500" fontSize="md">
-              people enrolled in this course
-            </Text>{" "}
-          </Text>{" "}
+            {props.people}
+          </Text>
+          <Text pl="8px" color="teal.500" fontSize="md">
+            people enrolled in this course
+          </Text>
           <Text color="gray.500" fontSize="sm">
-            Last update: {formatDate(props.updatedAt)}
+            Last update: {props.updatedAt}
           </Text>
         </Stack>
       </CardBody>
