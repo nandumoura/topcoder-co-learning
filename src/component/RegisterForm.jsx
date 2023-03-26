@@ -1,6 +1,6 @@
 import { useState } from "react";
-import auth, { addUser } from "../firebase-config";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { addUser, createUserWithFirebase } from "../firebase-config";
+
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -31,8 +31,8 @@ const RegisterForm = () => {
     setShowError(false);
 
     if (validatePassword()) {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((response) => {
+      createUserWithFirebase(email, password)
+        .then(() => {
           addUser(name, email);
           navigate("/home");
         })
