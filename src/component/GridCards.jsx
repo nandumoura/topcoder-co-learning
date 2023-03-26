@@ -1,26 +1,35 @@
 import React, { useState, useEffect } from "react";
-
+import { Outlet, Link } from "react-router-dom";
 import { getAllLearningSpaces } from "../firebase-config";
-import { Box, Heading, Grid } from "@chakra-ui/react";
+import { Box, Heading, Grid, Spinner } from "@chakra-ui/react";
 // my componentes
 import CourseCard from "./CourseCard";
 
+export async function testGetAllLearningSpaces() {
+  const dataFromFirebase = await getAllLearningSpaces();
+
+  return dataFromFirebase;
+}
 const GridCards = () => {
   const [learningSpaces, setLearningSpaces] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  async function testGetAllLearningSpaces() {
-    const learningSpaces = await getAllLearningSpaces([]);
-    console.log(learningSpaces[0].updated_at);
-    setLearningSpaces(learningSpaces);
-    setIsLoading(false);
-  }
-
   useEffect(() => {
-    testGetAllLearningSpaces();
+    testGetAllLearningSpaces().then((response) => {
+      setLearningSpaces(response);
+      setIsLoading(false);
+    });
   }, []);
   if (isLoading) {
-    return <>Loading</>;
+    return (
+      <Spinner
+        thickness="8px"
+        speed="0.85s"
+        emptyColor="teal.300"
+        color="teal.600"
+        size="xl"
+      />
+    );
   }
   function formatData(obj) {
     const updatedAt = new Date(obj.seconds * 1000);
@@ -34,14 +43,13 @@ const GridCards = () => {
       </Heading>
       <Grid templateColumns="repeat(3, 1fr)" gap={6} padding={4}>
         {learningSpaces.map((space) => {
-          console.log(space);
           return (
             <CourseCard
               key={space.id}
               name={space.name}
               updatedAt={formatData(space.updated_at)}
               imgSrc={space.thumbnail}
-              courseUrl={"/"}
+              courseUrl={`learning-spaces/${space.id}`}
               people={space?.users?.length}
             />
           );

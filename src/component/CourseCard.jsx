@@ -8,10 +8,9 @@ import {
   Divider,
   Image,
   Stack,
-  Link,
   Button,
 } from "@chakra-ui/react";
-
+import { Outlet, Link } from "react-router-dom";
 function CourseCard(props) {
   return (
     <Card maxW="sm">

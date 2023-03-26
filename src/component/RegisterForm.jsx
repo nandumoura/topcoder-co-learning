@@ -1,5 +1,5 @@
 import { useState } from "react";
-import auth from "../firebase-config";
+import auth, { addUser } from "../firebase-config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
@@ -33,11 +33,7 @@ const RegisterForm = () => {
     if (validatePassword()) {
       createUserWithEmailAndPassword(auth, email, password)
         .then((response) => {
-          localStorage.setItem("name", name);
-          localStorage.setItem(
-            "Auth Token",
-            response._tokenResponse.refreshToken
-          );
+          addUser(name, email);
           navigate("/home");
         })
         .catch((error) => {

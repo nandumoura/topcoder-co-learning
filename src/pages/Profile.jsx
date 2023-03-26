@@ -1,16 +1,7 @@
 import { Box, Divider, Flex, Avatar, Badge, Text } from "@chakra-ui/react";
-import Navbar from "../component/Navbar";
-import React, { useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuthValue } from "../AuthContext";
-function Profile() {
-  const currentUser = useAuthValue() || {};
+import NavbarComponent from "../component/NavbarComponent";
 
-  let name = localStorage.getItem("name");
-  let navigate = useNavigate();
-  useEffect(() => {
-    currentUser.email ? "" : navigate("/");
-  }, []);
+function Profile() {
   return (
     <Box
       borderRadius="md"
@@ -24,7 +15,7 @@ function Profile() {
       mx="auto"
       padding={5}
     >
-      <Navbar />
+      <NavbarComponent />
       <Box fontSize="md" fontWeight="bold">
         Name:
       </Box>
@@ -33,8 +24,7 @@ function Profile() {
         <Avatar src="https://bit.ly/sage-adebayo" />
         <Box ml="3">
           <Text fontWeight="bold">
-            {name}
-
+            "todo por nome"
             <Badge ml="1" colorScheme="green">
               New
             </Badge>

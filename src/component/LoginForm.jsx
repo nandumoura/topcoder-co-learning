@@ -14,6 +14,16 @@ import {
   AlertDescription,
 } from "@chakra-ui/react";
 
+const authenticateUser = async (email, password) => {
+  try {
+    const response = await signInWithEmailAndPassword(auth, email, password);
+    localStorage.setItem("Auth Token", response._tokenResponse.refreshToken);
+    return { success: true };
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};
+
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,21 +37,16 @@ const LoginForm = () => {
     setIsSubmitting(true);
     setShowError(false);
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((response) => {
-        localStorage.setItem(
-          "Auth Token",
-          response._tokenResponse.refreshToken
-        );
-        navigate("/home");
-      })
-      .catch((error) => {
-        setTypeError(error.message);
-        setShowError(true);
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
+    const result = await authenticateUser(email, password);
+
+    if (result.success) {
+      navigate("/home");
+    } else {
+      setTypeError(result.message);
+      setShowError(true);
+    }
+
+    setIsSubmitting(false);
   };
 
   return (

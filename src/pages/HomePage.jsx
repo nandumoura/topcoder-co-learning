@@ -3,12 +3,13 @@ import {
   Card,
   CardHeader,
   Heading,
+  Link,
   CardBody,
   Text,
-  Link,
   Stack,
   StackDivider,
 } from "@chakra-ui/react";
+
 // my componentes
 import SpaceScreen from "../component/SpaceScreen";
 import GridCards from "../component/GridCards";

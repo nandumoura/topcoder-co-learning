@@ -1,16 +1,11 @@
 import { Box, Text } from "@chakra-ui/react";
-import React, { useEffect } from "react";
-
-import { useAuthValue } from "../AuthContext";
-import { useNavigate } from "react-router-dom";
-import Navbar from "../component/Navbar";
+import React from "react";
+import { Outlet, Link, useLoaderData } from "react-router-dom";
+import NavbarComponent from "../component/NavbarComponent";
 
 function LearningSpace() {
-  const currentUser = useAuthValue() || {};
-  let navigate = useNavigate();
-  useEffect(() => {
-    currentUser.email ? "" : navigate("/");
-  }, []);
+  const learningSpaces = useLoaderData();
+  console.log(learningSpaces);
   return (
     <Box
       borderRadius="md"
@@ -23,7 +18,7 @@ function LearningSpace() {
       maxW="560px"
       mx="auto"
     >
-      <Navbar />
+      <NavbarComponent />
       <Text padding={5}>Learning Space</Text>
       <Text padding={5}>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
