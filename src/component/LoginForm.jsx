@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import auth from "../firebase-config";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { singInFirebase } from "../firebase-config";
+
 import {
   FormControl,
   FormLabel,
@@ -13,16 +13,6 @@ import {
   AlertTitle,
   AlertDescription,
 } from "@chakra-ui/react";
-
-const authenticateUser = async (email, password) => {
-  try {
-    const response = await signInWithEmailAndPassword(auth, email, password);
-    localStorage.setItem("Auth Token", response._tokenResponse.refreshToken);
-    return { success: true };
-  } catch (error) {
-    return { success: false, message: error.message };
-  }
-};
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -37,7 +27,7 @@ const LoginForm = () => {
     setIsSubmitting(true);
     setShowError(false);
 
-    const result = await authenticateUser(email, password);
+    const result = await singInFirebase(email, password);
 
     if (result.success) {
       navigate("/home");
