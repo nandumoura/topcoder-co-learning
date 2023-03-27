@@ -1,11 +1,80 @@
-import { Box, Text } from "@chakra-ui/react";
-import React from "react";
-import { Outlet, Link, useLoaderData } from "react-router-dom";
+import {
+  Box,
+  Text,
+  ButtonGroup,
+  Button,
+  Stat,
+  Heading,
+  StatHelpText,
+  StatLabel,
+  StatNumber,
+  Image,
+} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Outlet, Link, useParams, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  getLearningSpaceById,
+  addUserToALearningSpace,
+  removeUserToALearningSpace,
+} from "../firebase-config";
+import PageLoading from "./PageLoading";
 import NavbarComponent from "../component/NavbarComponent";
+import { formatDateFirebase } from "../utils/format-data";
+// todo obter dados e atualizar pagina
+
+//[x] - When clicked on any co-learning card from the homepage, the app should render that co-learning space screen.
+// [x]- A learning space shall display an overview of the learning space.
+// [x]- A learning space shall display a button to join/leave a learning space near its title. If the user is not authenticated, it should display Sign up to Join otherwise Join
+// [x]- A learning space shall display a prerequisites list, demonstrating the learning requirements for the learning space. We will cover how this list will appear in the HARD challenge.
+// []- A learning space shall display a list of Posts created inside the learning space in a sorted order by date.
+// []- A learning space shall display a button to create a Post.
+// []- A learning space shall display a list of active users that are currently visiting the learning space. Clicking on one of the users will reroute to their profile page.
+// []- A learning space shall display a list of related learning spaces, which are determined by the keywords used during the creation of learning spaces. We will cover how the keywords are listed in the HARD challenge.
 
 function LearningSpace() {
-  const learningSpaces = useLoaderData();
-  console.log(learningSpaces);
+  const { id } = useParams();
+  const user = useSelector((state) => state.user.value);
+  const [learningSpace, setLearningSpace] = useState(null);
+
+  useEffect(() => {
+    async function fetchLearningSpace() {
+      const space = await getLearningSpaceById(id);
+      setLearningSpace(space);
+    }
+
+    fetchLearningSpace();
+  }, [id]);
+
+  function handleJoinLeaveSpaceBtn() {
+    if (!user.email) {
+      navigate("/login");
+      return;
+    }
+
+    const isUserInSpace = learningSpace.Users?.includes(user.id);
+
+    if (isUserInSpace) {
+      removeUserToALearningSpace(id, user.id);
+      setLearningSpace((prevState) => {
+        const updatedUsers = prevState.Users.filter((id) => id !== user.id);
+        return { ...prevState, Users: updatedUsers };
+      });
+    } else {
+      addUserToALearningSpace(id, user.id);
+      setLearningSpace((prevState) => {
+        const updatedUsers = [...prevState.Users, user.id];
+        return { ...prevState, Users: updatedUsers };
+      });
+    }
+  }
+
+  if (!learningSpace) {
+    return <PageLoading isFullPage={true} />;
+  }
+
+  const isUserInSpace = user.email && learningSpace.Users?.includes(user.id);
+
   return (
     <Box
       borderRadius="md"
@@ -15,26 +84,39 @@ function LearningSpace() {
       display="row"
       alignItems="center"
       justifyContent="space-between"
-      maxW="560px"
+      maxW="90%"
       mx="auto"
     >
-      <NavbarComponent />
-      <Text padding={5}>Learning Space</Text>
-      <Text padding={5}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
-        doloremque itaque pariatur distinctio voluptatem et illum nihil iusto
-        accusantium laboriosam! Nesciunt qui nemo non, officiis harum ut hic
-        corrupti! Recusandae? Lorem ipsum dolor sit amet consectetur adipisicing
-        elit. Officiis porro exercitationem veritatis molestiae odit aut tempora
-        assumenda, ea unde nisi quaerat laboriosam magni totam sapiente minima,
-        minus eveniet aliquid. Beatae. Lorem ipsum dolor sit amet consectetur
-        adipisicing elit. Tempore, vero quo, quidem velit quos tempora dolorem
-        consequuntur cupiditate ratione ex magnam numquam nemo eius quia
-        reprehenderit vel odio voluptatem temporibus. Lorem ipsum dolor sit,
-        amet consectetur adipisicing elit. Tenetur ea quod, quia eaque facere
-        ducimus in, ad totam ut voluptatum saepe illum suscipit veritatis, eos
-        placeat doloremque? Ratione, fugiat minus!Lorem
-      </Text>
+      <NavbarComponent isLoading={false} />
+
+      <Image
+        src={learningSpace.thumbnail}
+        alt={learningSpace.title}
+        width="100%"
+      />
+
+      <Heading padding={5}>{learningSpace.title}</Heading>
+
+      <ButtonGroup padding={5}>
+        <Button
+          variant="solid"
+          colorScheme="blue"
+          onClick={handleJoinLeaveSpaceBtn}
+        >
+          {isUserInSpace ? "Leave a learning space" : "Join a learning space"}
+        </Button>
+      </ButtonGroup>
+
+      <Text padding={5}>{learningSpace.overview}</Text>
+      <Text padding={5}>{learningSpace.prerequisites}</Text>
+
+      <Stat padding={5}>
+        <StatLabel>Users in this learning space:</StatLabel>
+        <StatNumber>{learningSpace.Users?.length}</StatNumber>
+        <StatHelpText>
+          Last update: {formatDateFirebase(learningSpace.updated_at)}
+        </StatHelpText>
+      </Stat>
     </Box>
   );
 }
