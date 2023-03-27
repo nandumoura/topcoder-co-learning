@@ -32,9 +32,11 @@ const RegisterForm = () => {
 
     if (validatePassword()) {
       createUserWithFirebase(email, password)
-        .then(() => {
-          addUser(name, email);
-          navigate("/home");
+        .then((response) => {
+          console.log(response);
+          addUser(name, email, response.user.uid).then(() => {
+            navigate("/");
+          });
         })
         .catch((error) => {
           setTypeError(error.message);
