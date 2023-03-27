@@ -8,6 +8,7 @@ import Profile from "./pages/Profile";
 import PageNotFound from "./pages/PageNotFound";
 import HomePage from "./pages/HomePage";
 import { onAuthStateChanged } from "firebase/auth";
+import { getUserByEmail } from "./firebase-config";
 import auth from "./firebase-config";
 import LearningSpace from "./pages/LearningSpace";
 
@@ -16,12 +17,13 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      const getBdUser = await getUserByEmail(user.email);
       dispatch(
         add({
           email: user.email,
+          name: getBdUser.name,
           id: user.uid,
-          metadata: user.metadata,
         })
       );
     });
