@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { add } from "../redux/learningSpacesSlice";
+
 import { formatDateFirebase } from "../utils/format-data";
 import { getAllLearningSpaces } from "../firebase-config";
 import { Box, Heading, Grid, Spinner } from "@chakra-ui/react";
 // my componentes
 import CourseCard from "./CourseCard";
+import PageLoading from "../pages/PageLoading";
 
 export async function testGetAllLearningSpaces() {
   const dataFromFirebase = await getAllLearningSpaces();
@@ -14,27 +14,17 @@ export async function testGetAllLearningSpaces() {
   return dataFromFirebase;
 }
 const GridCards = () => {
-  const learningSpaces = useSelector((state) => state.learningSpaces.value);
-  const dispatch = useDispatch();
-
+  const [learningSpaces, setIssetLearningSpaces] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     testGetAllLearningSpaces().then((response) => {
-      dispatch(add(response));
+      setIssetLearningSpaces(response);
       setIsLoading(false);
     });
   }, []);
   if (isLoading) {
-    return (
-      <Spinner
-        thickness="8px"
-        speed="0.85s"
-        emptyColor="teal.300"
-        color="teal.600"
-        size="xl"
-      />
-    );
+    return <PageLoading withoutNavBar={true} isFullPage={false} />;
   }
 
   return (
