@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { add } from "./redux/userSlice";
 
 import AuthPage from "./pages/AuthPage";
 import Profile from "./pages/Profile";
@@ -9,13 +11,19 @@ import { onAuthStateChanged } from "firebase/auth";
 import auth from "./firebase-config";
 import LearningSpace from "./pages/LearningSpace";
 
-import { testGetAllLearningSpaces as learningSpacesLoader } from "./component/GridCards";
 function App() {
-  const [user, setUser] = useState(null);
+  const user = useSelector((state) => state.user.value);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
+      dispatch(
+        add({
+          email: user.email,
+          id: user.uid,
+          metadata: user.metadata,
+        })
+      );
     });
     return unsubscribe;
   }, []);
@@ -25,7 +33,6 @@ function App() {
       path: "/",
       element: <HomePage user={user} />,
       errorElement: <PageNotFound />,
-      loader: learningSpacesLoader,
     },
     {
       path: "learning-spaces/:id",
