@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { add } from "../redux/learningSpacesSlice";
+import { formatDateFirebase } from "../utils/format-data";
 import { getAllLearningSpaces } from "../firebase-config";
 import { Box, Heading, Grid, Spinner } from "@chakra-ui/react";
 // my componentes
@@ -11,12 +14,14 @@ export async function testGetAllLearningSpaces() {
   return dataFromFirebase;
 }
 const GridCards = () => {
-  const [learningSpaces, setLearningSpaces] = useState([]);
+  const learningSpaces = useSelector((state) => state.learningSpaces.value);
+  const dispatch = useDispatch();
+
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     testGetAllLearningSpaces().then((response) => {
-      setLearningSpaces(response);
+      dispatch(add(response));
       setIsLoading(false);
     });
   }, []);
@@ -31,11 +36,7 @@ const GridCards = () => {
       />
     );
   }
-  function formatData(obj) {
-    const updatedAt = new Date(obj.seconds * 1000);
-    const formattedDate = `${updatedAt.toLocaleDateString()} ${updatedAt.toLocaleTimeString()}`;
-    return formattedDate;
-  }
+
   return (
     <Box display="grid" gridGap={2} gridAutoFlow="row dense">
       <Heading size="md" textAlign={"center"}>
@@ -47,7 +48,7 @@ const GridCards = () => {
             <CourseCard
               key={space.id}
               name={space.name}
-              updatedAt={formatData(space.updated_at)}
+              updatedAt={formatDateFirebase(space.updated_at)}
               imgSrc={space.thumbnail}
               courseUrl={`learning-spaces/${space.id}`}
               people={space?.users?.length}

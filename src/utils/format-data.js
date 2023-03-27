@@ -1,4 +1,4 @@
-function formatDate(dateStr) {
+export function formatDate(dateStr) {
   const dateObj = new Date(dateStr);
   const formattedDate = new Intl.DateTimeFormat("pt-BR", {
     day: "2-digit",
@@ -11,4 +11,9 @@ function formatDate(dateStr) {
   }).format(dateObj);
   return formattedDate;
 }
-export default formatDate;
+
+export function formatDateFirebase(obj) {
+  const updatedAt = new Date(obj.seconds * 1000);
+  const formattedDate = `${updatedAt.toLocaleDateString()} ${updatedAt.toLocaleTimeString()}`;
+  return formattedDate;
+}
