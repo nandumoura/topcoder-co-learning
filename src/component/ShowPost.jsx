@@ -7,6 +7,7 @@ import {
   Card,
   CardBody,
 } from "@chakra-ui/react";
+import MDEditor from "@uiw/react-md-editor";
 
 const ShowPost = (props) => {
   return (
@@ -14,7 +15,14 @@ const ShowPost = (props) => {
       <Heading>{props.title}</Heading>
       <CardBody>
         <Stack divider={<StackDivider />} spacing="4">
-          <Text>{props.content}</Text>
+          <MDEditor.Markdown
+            source={props.content}
+            style={{
+              whiteSpace: "pre-wrap",
+              background: "white",
+              color: "black",
+            }}
+          />
           <Text>{props.created_at}</Text>
         </Stack>
       </CardBody>

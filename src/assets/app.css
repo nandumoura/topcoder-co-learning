@@ -1,0 +1,7 @@
+.wmde-markdown pre > code {
+  color: rgb(101, 219, 205);
+}
+.wmde-markdown {
+  background-color: rgb(255, 255, 255) !important;
+  color: black !important;
+}

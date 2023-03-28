@@ -1,5 +1,6 @@
 // react imports and libs
 import React, { useEffect } from "react";
+import "./assets/app.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -17,6 +18,7 @@ import AuthPage from "./pages/AuthPage";
 import Profile from "./pages/Profile";
 import PageNotFound from "./pages/PageNotFound";
 import HomePage from "./pages/HomePage";
+import MarkDownEditor from "./pages/MarkDownEditor";
 
 function App() {
   const user = useSelector((state) => state.user.value);
@@ -66,6 +68,11 @@ function App() {
     {
       path: "/profile/:id",
       element: <Profile user={user} />,
+      errorElement: <PageNotFound />,
+    },
+    {
+      path: "/markdown",
+      element: <MarkDownEditor />,
       errorElement: <PageNotFound />,
     },
     { path: "/teste", element: <TestePage />, errorElement: <PageNotFound /> },

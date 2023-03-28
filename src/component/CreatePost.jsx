@@ -16,7 +16,7 @@ import {
   Input,
   InputGroup,
 } from "@chakra-ui/react";
-
+import MDEditor from "@uiw/react-md-editor";
 import { AddIcon } from "@chakra-ui/icons";
 import { addPost } from "../firebase-config";
 
@@ -80,16 +80,11 @@ const CreatePost = (props) => {
 
               <Box>
                 <FormLabel htmlFor="content">Content</FormLabel>
-                <InputGroup>
-                  <Textarea
-                    type="text"
-                    id="content"
-                    value={content}
-                    onChange={(event) => setContent(event.target.value)}
-                    placeholder="Please enter content"
-                    height={400}
-                  />
-                </InputGroup>
+                <MDEditor
+                  style={{ background: "white", color: "black" }}
+                  value={content}
+                  onChange={setContent}
+                />
               </Box>
             </Stack>
           </DrawerBody>
