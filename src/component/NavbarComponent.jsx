@@ -1,17 +1,17 @@
 import { Box, Flex, Spacer, Text, Spinner } from "@chakra-ui/react";
-import { Link } from "react-router-dom"; // se estiver usando React Router
+import { Link } from "react-router-dom";
 
 const NavbarComponent = (props) => {
   return (
     <Flex alignItems="center" backgroundColor="gray.200" p={4}>
       <Box>
-        <Text fontWeight="bold" fontSize="xl">
-          {props.isLoading ? (
-            <Spinner emptyColor="teal.300" color="teal.600" />
-          ) : (
-            "Learning space App"
-          )}
-        </Text>
+        {props.isLoading ? (
+          <Spinner emptyColor="teal.300" color="teal.600" />
+        ) : (
+          <Text fontWeight="bold" fontSize="xl">
+            Learning space App
+          </Text>
+        )}
       </Box>
       <Spacer />
       <Box>
