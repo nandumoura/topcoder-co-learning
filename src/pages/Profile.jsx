@@ -1,7 +1,35 @@
+import { useState, useEffect } from "react";
 import { Box, Divider, Flex, Avatar, Badge, Text } from "@chakra-ui/react";
+import { Outlet, Link, useParams, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import NavbarComponent from "../component/NavbarComponent";
+import { getUserById } from "../firebase-config";
+// todo obter dados do usuario
+
+//Name,
+//Biography and
+//Country of residence,
+//interests (ReactJS tags) and a
+//placeholder photo thumbnail.
 
 function Profile() {
+  const { id } = useParams();
+  const user = useSelector((state) => state.user.value);
+  const [showUser, setShowUser] = useState({});
+
+  useEffect(() => {
+    async function getUser() {
+      if (!id) {
+        setShowUser(user);
+      } else {
+        const respUser = await getUserById(id);
+
+        setShowUser(respUser);
+      }
+    }
+    getUser();
+  }, [user]);
+
   return (
     <Box
       borderRadius="md"
@@ -24,7 +52,7 @@ function Profile() {
         <Avatar src="https://bit.ly/sage-adebayo" />
         <Box ml="3">
           <Text fontWeight="bold">
-            "todo por nome"
+            {showUser?.name}
             <Badge ml="1" colorScheme="green">
               New
             </Badge>
