@@ -11,7 +11,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { Outlet, Link, useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getLearningSpaceById,
@@ -40,16 +40,19 @@ function LearningSpace() {
   const user = useSelector((state) => state.user.value);
   const [learningSpace, setLearningSpace] = useState(null);
   const [posts, setPosts] = useState([]);
+
   useEffect(() => {
     async function fetchLearningSpace() {
       const space = await getLearningSpaceById(id);
+      console.log(space);
       space.posts = await getPosts(id);
+
       setPosts(space.posts);
       setLearningSpace(space);
     }
 
     fetchLearningSpace();
-  }, [id, posts]);
+  }, [user]);
 
   function handleJoinLeaveSpaceBtn() {
     if (!user.email) {
@@ -73,8 +76,10 @@ function LearningSpace() {
       });
     }
   }
-  function handlePostCreation(post) {
-    setPosts((prevState) => [...prevState, post]);
+
+  async function handlePostCreation() {
+    const posts = await getPosts(id);
+    setPosts(posts);
   }
   if (!learningSpace) {
     return <PageLoading isFullPage={true} />;
