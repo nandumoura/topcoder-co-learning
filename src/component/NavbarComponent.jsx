@@ -8,7 +8,7 @@ const NavbarComponent = (props) => {
         {props.isLoading ? (
           <Spinner emptyColor="teal.300" color="teal.600" />
         ) : (
-          <Text fontWeight="bold" fontSize="xl">
+          <Text as={Link} to="/" fontWeight="bold" fontSize="xl">
             Learning space App
           </Text>
         )}

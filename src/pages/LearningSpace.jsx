@@ -49,14 +49,21 @@ function LearningSpace() {
     async function fetchLearningSpace() {
       const space = await getLearningSpaceById(id);
       space.posts = await getPosts(id);
-      !learningSpace?.ActiveUsers.includes(user.id) ??
-        (await addActiveUsersToALearningSpace(id, user.name, user.id));
+
+      const userIsActive = await learningSpace?.ActiveUsers.filter(
+        (activeUsers) => activeUsers.id == user.id
+      );
+
+      if (userIsActive?.length > 0 || userIsActive == undefined) {
+        await addActiveUsersToALearningSpace(id, user.name, user.id);
+      }
+
       setPosts(space.posts);
       setLearningSpace(space);
     }
 
     fetchLearningSpace();
-  }, [user]);
+  }, [id, user]);
 
   function handleJoinLeaveSpaceBtn() {
     if (!user.email) {
@@ -71,13 +78,13 @@ function LearningSpace() {
     if (isUserInSpace) {
       removeUserToALearningSpace(id, user.id);
       setLearningSpace((prevState) => {
-        const updatedUsers = prevState.Users.filter((id) => id !== user.id);
+        const updatedUsers = prevState?.Users.filter((id) => id !== user.id);
         return { ...prevState, Users: updatedUsers };
       });
     } else {
       addUserToALearningSpace(id, user.id);
       setLearningSpace((prevState) => {
-        const updatedUsers = [...prevState.Users, user.id];
+        const updatedUsers = [...prevState?.Users, user.id];
         return { ...prevState, Users: updatedUsers };
       });
     }
@@ -147,7 +154,7 @@ function LearningSpace() {
       <Stack margin={5} direction="row">
         <Box>
           <Text>Active users:</Text>
-          {learningSpace.ActiveUsers.map((user) => {
+          {learningSpace?.ActiveUsers?.map((user) => {
             return (
               <Badge
                 key={user.id}
@@ -179,11 +186,15 @@ function LearningSpace() {
           );
         })}
       </Box>
-      <CreatePost
-        learningSpaceId={id}
-        userId={user.id}
-        onPostCreation={handlePostCreation}
-      />
+      {user?.id ? (
+        <CreatePost
+          learningSpaceId={id}
+          userId={user.id}
+          onPostCreation={handlePostCreation}
+        />
+      ) : (
+        <></>
+      )}
     </Box>
   );
 }

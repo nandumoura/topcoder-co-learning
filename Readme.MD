@@ -1,3 +1,27 @@
+#
+
+[screen record a video of all the functionality built in this challenge](https://drive.google.com/file/d/10mVkZNeqR5wDF3fQZyGVe4BmsdENIeat/view?usp=sharing)
+
+##
+
+I will not send the nodemodules folder
+to run, just enter the project folder with the terminal and type
+
+```
+npm install
+```
+
+to install the dependencies
+
+and then
+
+```
+npm run dev
+```
+
+to run the project in the terminal, a link will probably appear for localhost probably to 5173 port
+[localhost](http://localhost:5173/)
+
 # Easy
 
 ## What do you need to do in this Easy challenge?
@@ -32,7 +56,7 @@ This screen will be visible to both authenticated and non-authenticated users.
 - Below this section will be the following Co-learning Spaces section.
 - There will be a grid of ReactJS cards component displaying all co-learning spaces. Each card will display a thumbnail of a co-learning space, the title, number of members and last update in that space. There is no specific design orientation, you are free to design how it looks, but it has to be in a card and with the information mentioned above. More information about card component is mentioned in the reference section.
 
-- [ ] Learning Space
+- [x] Learning Space
 
 ## Viewing Learning Space
 

@@ -1,17 +1,23 @@
+// react imports and libs
 import React, { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+//redux
 import { useSelector, useDispatch } from "react-redux";
 import { add } from "./redux/userSlice";
 
+// get data functions
+import { onAuthStateChanged } from "firebase/auth";
+import auth, { getUserByEmail } from "./firebase-config";
+
+// pages
+import LearningSpace from "./pages/LearningSpace";
+import TestePage from "./pages/TestePage";
+import CreateLearningSpace from "./pages/CreateLearningSpace";
 import AuthPage from "./pages/AuthPage";
 import Profile from "./pages/Profile";
 import PageNotFound from "./pages/PageNotFound";
 import HomePage from "./pages/HomePage";
-import { onAuthStateChanged } from "firebase/auth";
-import { getUserByEmail } from "./firebase-config";
-import auth from "./firebase-config";
-import LearningSpace from "./pages/LearningSpace";
-import TestePage from "./pages/TestePage";
+
 function App() {
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
@@ -49,7 +55,7 @@ function App() {
 
     {
       path: "/create-learning-space",
-      element: <Profile user={user} />,
+      element: <CreateLearningSpace user={user} />,
       errorElement: <PageNotFound />,
     },
     {

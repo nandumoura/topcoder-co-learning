@@ -33,7 +33,7 @@ function Profile(props) {
       display="row"
       alignItems="center"
       justifyContent="space-between"
-      maxW="560px"
+      maxW="760px"
       mx="auto"
       padding={5}
     >
