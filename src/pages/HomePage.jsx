@@ -9,14 +9,24 @@ import {
   Stack,
   StackDivider,
 } from "@chakra-ui/react";
-
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 // my componentes
 import SpaceScreen from "../component/SpaceScreen";
 import GridCards from "../component/GridCards";
 
 function App(props) {
+  const user = useSelector((state) => state.user.value);
+  const navigate = useNavigate();
   const isPageInitial = true;
 
+  function handleJoinLeaveSpaceBtn() {
+    if (!user.email) {
+      navigate("/login");
+      return;
+    }
+  }
+  const isUserLoggedIn = user.email;
   return (
     <Box
       borderRadius="md"
@@ -36,18 +46,11 @@ function App(props) {
         <CardBody>
           <Stack divider={<StackDivider />} spacing="4"></Stack>
           <Box>
-            {props?.user?.email ? (
-              <Text pt="2" fontSize="sm">
-                Join a learning space below
-              </Text>
-            ) : (
-              <Text pt="2" fontSize="sm">
-                Sign up to start learning{" "}
-                <Link color="teal.500" href="/login">
-                  click here to login
-                </Link>
-              </Text>
-            )}
+            <Heading onClick={handleJoinLeaveSpaceBtn} textAlign="center">
+              {isUserLoggedIn
+                ? "Join a learning space below"
+                : "Sign up to start learning Click here"}
+            </Heading>
           </Box>
         </CardBody>
       </Card>

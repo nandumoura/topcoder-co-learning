@@ -49,7 +49,7 @@ const LoginForm = () => {
             <AlertDescription>{typeError}</AlertDescription>
           </Alert>
         )}
-        <FormControl id="email">
+        <FormControl id="Lemail">
           <FormLabel>Email address</FormLabel>
           <Input
             type="email"
@@ -57,7 +57,7 @@ const LoginForm = () => {
             onChange={(event) => setEmail(event.target.value)}
           />
         </FormControl>
-        <FormControl id="password">
+        <FormControl id="Lpassword">
           <FormLabel>Password</FormLabel>
           <Input
             type="password"

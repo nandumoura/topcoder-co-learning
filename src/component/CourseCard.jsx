@@ -42,7 +42,7 @@ function CourseCard(props) {
             variant="solid"
             colorScheme="blue"
           >
-            Start this course!
+            Show more!
           </Button>
         </ButtonGroup>
       </CardFooter>

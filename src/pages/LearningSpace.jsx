@@ -28,9 +28,8 @@ import ShowPost from "../component/ShowPost";
 import { formatDateFirebase } from "../utils/format-data";
 import CreatePost from "../component/CreatePost";
 import RelatedLearningSpaces from "../component/RelatedLearningSpaces";
-// todo obter dados e atualizar pagina
 
-//[x] - When clicked on any co-learning card from the homepage, the app should render that co-learning space screen.
+// [x] - When clicked on any co-learning card from the homepage, the app should render that co-learning space screen.
 // [x]- A learning space shall display an overview of the learning space.
 // [x]- A learning space shall display a button to join/leave a learning space near its title. If the user is not authenticated, it should display Sign up to Join otherwise Join
 // [x]- A learning space shall display a prerequisites list, demonstrating the learning requirements for the learning space. We will cover how this list will appear in the HARD challenge.
@@ -50,7 +49,8 @@ function LearningSpace() {
     async function fetchLearningSpace() {
       const space = await getLearningSpaceById(id);
       space.posts = await getPosts(id);
-      await addActiveUsersToALearningSpace(id, user.name, user.id);
+      !learningSpace?.ActiveUsers.includes(user.id) ??
+        (await addActiveUsersToALearningSpace(id, user.name, user.id));
       setPosts(space.posts);
       setLearningSpace(space);
     }
@@ -64,7 +64,9 @@ function LearningSpace() {
       return;
     }
 
-    const isUserInSpace = learningSpace.Users?.includes(user.id);
+    const isUserLoggedIn = user.email;
+    const isUserInSpace =
+      isUserLoggedIn && learningSpace.Users?.includes(user.id);
 
     if (isUserInSpace) {
       removeUserToALearningSpace(id, user.id);
@@ -88,9 +90,17 @@ function LearningSpace() {
   if (!learningSpace) {
     return <PageLoading isFullPage={true} />;
   }
-
-  const isUserInSpace = user.email && learningSpace.Users?.includes(user.id);
-
+  const isUserLoggedIn = user.email;
+  const isUserInSpace =
+    isUserLoggedIn && learningSpace.Users?.includes(user.id);
+  let buttonText;
+  if (!isUserLoggedIn) {
+    buttonText = "Sign up to start learning";
+  } else if (isUserInSpace) {
+    buttonText = "Leave a learning space";
+  } else {
+    buttonText = "Join a learning space";
+  }
   return (
     <Box
       borderRadius="md"
@@ -119,7 +129,7 @@ function LearningSpace() {
           colorScheme="blue"
           onClick={handleJoinLeaveSpaceBtn}
         >
-          {isUserInSpace ? "Leave a learning space" : "Join a learning space"}
+          {buttonText}
         </Button>
       </ButtonGroup>
       <Box>

@@ -4,15 +4,9 @@ import { Outlet, Link, useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import NavbarComponent from "../component/NavbarComponent";
 import { getUserById } from "../firebase-config";
-// todo obter dados do usuario
 
-//Name,
-//Biography and
-//Country of residence,
-//interests (ReactJS tags) and a
-//placeholder photo thumbnail.
-
-function Profile() {
+function Profile(props) {
+  const navigate = useNavigate();
   const { id } = useParams();
   const user = useSelector((state) => state.user.value);
   const [showUser, setShowUser] = useState({});
@@ -20,15 +14,15 @@ function Profile() {
   useEffect(() => {
     async function getUser() {
       if (!id) {
-        setShowUser(user);
+        user?.name ? setShowUser(user) : navigate("/");
       } else {
         const respUser = await getUserById(id);
-
         setShowUser(respUser);
       }
     }
+
     getUser();
-  }, [user]);
+  }, [user, id]);
 
   return (
     <Box
@@ -49,7 +43,7 @@ function Profile() {
       </Box>
       <Divider padding={2} />
       <Flex>
-        <Avatar src="https://bit.ly/sage-adebayo" />
+        <Avatar src="" />
         <Box ml="3">
           <Text fontWeight="bold">
             {showUser?.name}

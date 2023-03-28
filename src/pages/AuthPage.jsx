@@ -2,16 +2,13 @@ import { Box, Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import RegisterForm from "../component/RegisterForm";
 import LoginForm from "../component/LoginForm";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 
 function AuthPage(props) {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (props.user?.email) {
-      navigate("/");
-    }
-  }, [props.user?.email]);
+  if (props.user?.email) {
+    navigate("/");
+  }
 
   return (
     <Box
