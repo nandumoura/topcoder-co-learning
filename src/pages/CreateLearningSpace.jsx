@@ -21,6 +21,7 @@ import {
   FormLabel,
   Input,
   Textarea,
+  useToast,
   Button,
 } from "@chakra-ui/react";
 // system functions
@@ -29,6 +30,7 @@ import { addLearningSpace } from "../firebase-config";
 import NavBarComponent from "../component/NavbarComponent";
 
 const CreateLearningSpace = () => {
+  const toast = useToast();
   const user = useSelector((state) => state.user.value);
   const navigate = useNavigate();
 
@@ -54,10 +56,19 @@ const CreateLearningSpace = () => {
     // Aqui você pode enviar os dados do formulário para o servidor
     formData.keywords = formData.keywords.split(" ");
     const docCreated = await addLearningSpace(formData);
-    console.log(formData);
+
+    if (docCreated.id) {
+      toast({
+        isClosable: true,
+        title: "Learning Space Created",
+        description: "created successfully",
+        status: "success",
+      });
+    }
+
     setTimeout(() => {
       navigate("/learning-spaces/" + docCreated.id);
-    }, 500);
+    }, 900);
   };
   return (
     <Box

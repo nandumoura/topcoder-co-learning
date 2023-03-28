@@ -12,6 +12,7 @@ import {
   DrawerCloseButton,
   FormLabel,
   Textarea,
+  useToast,
   Stack,
   Input,
   InputGroup,
@@ -26,6 +27,7 @@ const CreatePost = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const firstField = React.useRef();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const toast = useToast();
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -36,12 +38,26 @@ const CreatePost = (props) => {
       title,
       content
     );
-
+    console.log(newPost);
     setContent("");
     setTitle("");
     setIsSubmitting(false);
     onClose();
     props.onPostCreation();
+    if (newPost.id) {
+      toast({
+        isClosable: true,
+        title: "Post Created",
+        description: "Post created successfully",
+        status: "success",
+      });
+    } else {
+      toast({
+        description: "An error occurred, please try again later.",
+        status: "error",
+        isClosable: true,
+      });
+    }
   }
   return (
     <>
