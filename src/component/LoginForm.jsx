@@ -30,7 +30,7 @@ const LoginForm = () => {
     const result = await singInFirebase(email, password);
 
     if (result.success) {
-      navigate("/home");
+      navigate("/");
     } else {
       setTypeError(result.message);
       setShowError(true);

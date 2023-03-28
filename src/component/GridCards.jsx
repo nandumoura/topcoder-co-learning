@@ -37,8 +37,8 @@ const GridCards = () => {
           return (
             <CourseCard
               key={space.id}
-              name={space.name}
-              updatedAt={formatDateFirebase(space.updated_at)}
+              name={space.title}
+              updatedAt={space.updated_at}
               imgSrc={space.thumbnail}
               courseUrl={`learning-spaces/${space.id}`}
               people={space?.users?.length}

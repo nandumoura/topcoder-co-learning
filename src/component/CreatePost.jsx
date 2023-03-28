@@ -30,18 +30,18 @@ const CreatePost = (props) => {
   async function handleSubmit(event) {
     event.preventDefault();
     setIsSubmitting(true);
-
     const newPost = await addPost(
       props.learningSpaceId,
       props.userId,
       title,
       content
     );
+
     setContent("");
     setTitle("");
     setIsSubmitting(false);
     onClose();
-    onPostCreation(newPost);
+    props.onPostCreation();
   }
   return (
     <>
