@@ -73,7 +73,7 @@ This screen will be visible to both authenticated and non-authenticated users.
 
 ## Creating a Learning Space
 
-- [ ] Creating a Learning Space
+- [x] Creating a Learning Space
 
 - An authenticated user should be able to create a new learning space from the Navbar menu title Create Space
 - A new space creation screen should be rendered.
@@ -81,7 +81,7 @@ This screen will be visible to both authenticated and non-authenticated users.
 
 ## Creating a Post
 
-- [ ] Creating a Post
+- [x] Creating a Post
 
 - Within a learning space, the user should be able to create a new post.
 - The post will have a title and a body. The body should use a Markdown text-editor input. You can refer to the reference to understand more about markdown editors.
