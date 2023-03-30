@@ -24,8 +24,14 @@ function CommentModal(props) {
 
   async function handleModalSubmit() {
     // put the logic here
-    console.log(props.post_id, props.user.id, content);
-    const comment = await addComment(id, props.post_id, props.user.id, content);
+
+    const comment = await addComment(
+      id,
+      props.post_id,
+      props.user.id,
+      content,
+      props.user.name
+    );
     if (comment.id) {
       toast({
         isClosable: true,

@@ -17,6 +17,7 @@ import { formatDateFirebase } from "../utils/format-data";
 import MDEditor from "@uiw/react-md-editor";
 import CommentModal from "./CommentModal";
 import ShowUpDownVotes from "./ShowUpDownVotes";
+import ViewComments from "./ViewComments";
 
 const ShowPost = (props) => {
   const {
@@ -72,7 +73,12 @@ const ShowPost = (props) => {
       <Button colorScheme="teal" margin={5} top={-10} onClick={handlePrint}>
         <PrintIcon /> Print this post in PDF
       </Button>
-      <CommentModal post_id={props.post_id} user={props.user} />
+      <CommentModal post_id={props.post.id} user={props.user} />
+      <ViewComments
+        learningSpace_id={props.learningSpace_id}
+        user={props.user}
+        post={props.post}
+      />
     </Box>
   );
 };

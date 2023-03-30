@@ -57,7 +57,7 @@ function LearningSpace() {
       if (userIsActive?.length > 0 || userIsActive == undefined) {
         await addActiveUsersToALearningSpace(id, user.name, user.id);
       }
-      console.log(space);
+
       setPosts(space.posts);
       setLearningSpace(space);
     }
@@ -92,7 +92,7 @@ function LearningSpace() {
 
   async function handlePostCreation() {
     const posts = await getPosts(id);
-    console.log(posts);
+
     setPosts(posts);
   }
   if (!learningSpace) {

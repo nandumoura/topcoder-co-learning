@@ -89,14 +89,14 @@ This screen will be visible to both authenticated and non-authenticated users.
 
 # Creating a Comment
 
-- [ ] Creating a Comment
+- [x] Creating a Comment
 
 - Within a learning space Post, the user should be able to add a new comment.
 - The comment will have a body. The body should use a Markdown text-editor input. You can refer to the reference to understand more about markdown editors.
 
 ## Upvotes/Downvotes
 
-- [ ] Upvotes/Downvotes
+- [x] Upvotes/Downvotes
 
 - The users should be able to upvote/downvote a Post, or a comment.
 

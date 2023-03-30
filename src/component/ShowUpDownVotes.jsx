@@ -8,6 +8,7 @@ const ShowUpDownVotes = (props) => {
   const [localUpvotes, setLocalUpvotes] = useState([...upvotes]);
   const [localDownvotes, setLocalDownvotes] = useState([...downvotes]);
   const upDownVotes = localUpvotes.length - localDownvotes.length;
+  const [initialized, setInitialized] = useState(false);
 
   const colorUpDown = upDownVotes >= 0 ? "teal.300" : "red.300";
   const handleUpDownvote = async (upOrDown) => {
@@ -48,16 +49,21 @@ const ShowUpDownVotes = (props) => {
     }
   };
   useEffect(() => {
-    const updateVotes = async () => {
-      await updateUpvotesAndDownvotes(
-        props.learningSpace_id,
-        props.post.id,
-        localUpvotes,
-        localDownvotes
-      );
-    };
+    if (initialized) {
+      // Verifica se já foi inicializado
+      const updateVotes = async () => {
+        await updateUpvotesAndDownvotes(
+          props.learningSpace_id,
+          props.post.id,
+          localUpvotes,
+          localDownvotes
+        );
+      };
 
-    updateVotes();
+      updateVotes();
+    } else {
+      setInitialized(true); // Define o estado inicial como true
+    }
   }, [localUpvotes, localDownvotes]);
   return (
     <Box
