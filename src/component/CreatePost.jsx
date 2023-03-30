@@ -36,7 +36,7 @@ const CreatePost = (props) => {
       title,
       content
     );
-    console.log(newPost);
+
     setContent("");
     setTitle("");
     setIsSubmitting(false);
@@ -109,7 +109,7 @@ const CreatePost = (props) => {
             </Button>
             <Button
               onClick={handleSubmit}
-              colorScheme="blue"
+              colorScheme="teal"
               isLoading={isSubmitting}
             >
               Submit

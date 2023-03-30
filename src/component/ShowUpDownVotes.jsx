@@ -52,12 +52,15 @@ const ShowUpDownVotes = (props) => {
     if (initialized) {
       // Verifica se já foi inicializado
       const updateVotes = async () => {
-        await updateUpvotesAndDownvotes(
+        const args = [
           props.learningSpace_id,
           props.post.id,
           localUpvotes,
-          localDownvotes
-        );
+          localDownvotes,
+          props.is_a_comment && props.comment.id,
+        ].filter(Boolean);
+
+        await updateUpvotesAndDownvotes(...args);
       };
 
       updateVotes();

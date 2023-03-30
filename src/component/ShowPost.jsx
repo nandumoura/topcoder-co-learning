@@ -46,6 +46,7 @@ const ShowPost = (props) => {
       >
         <Box display="flex" flexDirection="row">
           <ShowUpDownVotes
+            is_a_comment={false}
             learningSpace_id={props.learningSpace_id}
             user={props.user}
             post={props.post}
@@ -73,7 +74,11 @@ const ShowPost = (props) => {
       <Button colorScheme="teal" margin={5} top={-10} onClick={handlePrint}>
         <PrintIcon /> Print this post in PDF
       </Button>
-      <CommentModal post_id={props.post.id} user={props.user} />
+      <CommentModal
+        post_id={props.post.id}
+        user={props.user}
+        post={props.post}
+      />
       <ViewComments
         learningSpace_id={props.learningSpace_id}
         user={props.user}

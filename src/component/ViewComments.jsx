@@ -1,9 +1,7 @@
 import {
   Drawer,
   DrawerBody,
-  DrawerFooter,
   Button,
-  Text,
   Card,
   CardHeader,
   Badge,
@@ -17,24 +15,20 @@ import {
 import { getComment, getUserById } from "../firebase-config";
 import { useEffect, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
+import ShowUpDownVotes from "./ShowUpDownVotes";
 
 const ViewComments = (props) => {
   const [comments, setComments] = useState([]);
-
+  const getData = async () => {
+    const data = await getComment(props.learningSpace_id, props.post.id);
+    setComments(data);
+  };
   useEffect(() => {
-    const getData = async () => {
-      const data = await getComment(props.learningSpace_id, props.post.id);
-      setComments(data);
-    };
     getData();
   }, []);
 
-  console.log(comments);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const handleClick = () => {
-    onOpen();
-  };
   return (
     <>
       <Button margin={5} top={-10} onClick={() => onOpen()} m={4}>
@@ -44,18 +38,34 @@ const ViewComments = (props) => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Comments</DrawerHeader>
+          <DrawerHeader>
+            Comments <Button onClick={getData}>Refresh</Button>
+          </DrawerHeader>{" "}
           <DrawerBody>
             {comments.map((comment) => {
               return (
                 <Card key={comment.id}>
-                  <CardHeader>
-                    <Badge variant="outline" colorScheme="green">
+                  <CardHeader display="flex">
+                    <ShowUpDownVotes
+                      is_a_comment={true}
+                      learningSpace_id={props.learningSpace_id}
+                      user={props.user}
+                      comment={comment}
+                      post={props.post}
+                      upvotes={comment.upvotes}
+                      downvotes={comment.downvotes}
+                    />
+                    <Badge
+                      variant="outline"
+                      colorScheme="green"
+                      margin={"auto 18px"}
+                    >
                       {comment.userName}{" "}
                     </Badge>{" "}
                     says:
                   </CardHeader>
                   <CardBody>
+                    {" "}
                     <MDEditor.Markdown
                       source={comment.content}
                       style={{

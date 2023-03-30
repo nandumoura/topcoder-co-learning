@@ -49,6 +49,7 @@ function CommentModal(props) {
     setContent("");
     onClose();
   }
+
   return (
     <>
       <Button colorScheme="teal" variant="outline" top={-10} onClick={onOpen}>
