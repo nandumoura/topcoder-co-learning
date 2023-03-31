@@ -5,3 +5,10 @@
   background-color: rgb(255, 255, 255) !important;
   color: black !important;
 }
+
+mark {
+  background-color: #b2f5ea;
+  border-radius: 12px !important;
+  white-space: nowrap;
+  padding: 1px 8px;
+}

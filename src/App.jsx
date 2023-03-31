@@ -32,6 +32,7 @@ function App() {
           email: user.email,
           name: getBdUser.name,
           id: user.uid,
+          annotations: getBdUser.annotations,
         })
       );
     });

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef } from "react";
 import PrintIcon from "@mui/icons-material/Print";
 
 import {
@@ -14,11 +14,11 @@ import {
 
 import { useReactToPrint } from "react-to-print";
 import { formatDateFirebase } from "../utils/format-data";
-import MDEditor from "@uiw/react-md-editor";
+
 import CommentModal from "./CommentModal";
 import ShowUpDownVotes from "./ShowUpDownVotes";
 import ViewComments from "./ViewComments";
-
+import CreateAnnotation from "./CreateAnnotation";
 const ShowPost = (props) => {
   const {
     title,
@@ -59,13 +59,10 @@ const ShowPost = (props) => {
         </Box>
         <CardBody>
           <Stack divider={<StackDivider />} spacing="4">
-            <MDEditor.Markdown
+            <CreateAnnotation
+              post={props.post}
               source={content}
-              style={{
-                whiteSpace: "pre-wrap",
-                background: "white",
-                color: "black",
-              }}
+              user={props.user}
             />
             <Text>{formatDateFirebase(created_at)}</Text>
           </Stack>{" "}

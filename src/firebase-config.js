@@ -60,7 +60,7 @@ export const db = getFirestore(app);
 //   prerequisites: ["Nenhum pré-requisito necessário"],
 //   keywords: ["HTML", "CSS", "Web development"],
 // };
-export async function adicionarLearningSpace(novoLearningSpace) {
+export async function addLearningSpace(novoLearningSpace) {
   try {
     const docRef = await addDoc(collection(db, "Learning_Spaces"), {
       ...novoLearningSpace,
@@ -68,6 +68,7 @@ export async function adicionarLearningSpace(novoLearningSpace) {
       updated_at: serverTimestamp(),
     });
     console.log("Learning Space adicionado com sucesso! ID:", docRef.id);
+    return docRef;
   } catch (error) {
     console.error("Erro ao adicionar Learning Space:", error);
   }
@@ -101,11 +102,11 @@ export async function getUserByEmail(email) {
 }
 
 export // Adicionando anotações a um usuário existente
-async function addAnnotations(userId, annotations) {
+async function addAnnotations(userId, newAnnotation) {
   try {
     const userRef = doc(db, "Users", userId);
     await updateDoc(userRef, {
-      annotations: annotations,
+      annotations: arrayUnion(newAnnotation),
     });
     console.log("Anotações adicionadas com sucesso!");
   } catch (error) {
@@ -196,6 +197,41 @@ export async function addPost(learningSpaceID, userId, title, content) {
   return newPostRef;
 }
 
+export async function addComment(
+  learningSpaceId,
+  postId,
+  userId,
+  content,
+  userName
+) {
+  const docRef = doc(db, "Learning_Spaces", learningSpaceId, "Posts", postId);
+
+  //Crie um novo documento dentro da subcoleção 'Posts'
+  const newCommentRef = await addDoc(collection(docRef, "Comments"), {
+    content,
+    userName,
+    user_id: userId,
+    created_at: new Date(),
+    upvotes: [],
+    downvotes: [],
+  });
+
+  return newCommentRef;
+}
+export async function getComment(learningSpacesId, PostId) {
+  const docRef = doc(db, "Learning_Spaces", learningSpacesId, "Posts", PostId);
+  const commentsRef = collection(docRef, "Comments");
+  const q = query(commentsRef, orderBy("created_at", "desc"));
+  const commentsQuerySnapshot = await getDocs(q);
+  //Crie um novo documento dentro da subcoleção 'Posts'
+  const comments = commentsQuerySnapshot.docs.map((doc) => {
+    const data = doc.data();
+    const id = doc.id;
+    return { id, ...data };
+  });
+  return comments;
+}
+
 export async function getPosts(learningSpaceID) {
   const docRef = doc(db, "Learning_Spaces", learningSpaceID);
   const postsRef = collection(docRef, "Posts");
@@ -229,7 +265,58 @@ export async function addActiveUsersToALearningSpace(lsId, name, userid) {
     console.error("Erro ao adicionar usuário: ", error);
   }
 }
+export async function updateUpvotesAndDownvotes(
+  learningSpaceID,
+  postId,
+  upvotes,
+  downvotes,
+  commentId
+) {
+  const postPath = commentId
+    ? `Learning_Spaces/${learningSpaceID}/Posts/${postId}/Comments/${commentId}`
+    : `Learning_Spaces/${learningSpaceID}/Posts/${postId}`;
 
+  const postRef = doc(db, postPath);
+
+  try {
+    await updateDoc(postRef, {
+      upvotes: upvotes,
+      downvotes: downvotes,
+    });
+
+    console.log("Upvotes and downvotes updated successfully!");
+  } catch (error) {
+    console.error("Error updating upvotes and downvotes:", error);
+  }
+}
+export async function upvoteAndDownvote(learningSpaceID, postId, commentId) {
+  const args =
+    commentId !== undefined
+      ? [
+          db,
+          "Learning_Spaces",
+          learningSpaceID,
+          "Posts",
+          postId,
+          "Comments",
+          commentId,
+        ]
+      : [db, "Learning_Spaces", learningSpaceID, "Posts", postId];
+
+  console.log(...args);
+  const docRef = doc(...args);
+  try {
+    const querySnapshot = await getDoc(docRef);
+
+    return {
+      downvotes: querySnapshot.data().downvotes,
+      upvotes: querySnapshot.data().upvotes,
+    };
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+}
 export async function getActiveUsersFromLearningSpace(lsId) {
   if (!lsId) {
     return false;
