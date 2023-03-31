@@ -102,7 +102,7 @@ This screen will be visible to both authenticated and non-authenticated users.
 
 ## Annotation
 
-- [ ] Annotation
+- [x] Annotation
 
 - Annotation refers to a note by way of explanation or comment added to a text or diagram.
 - Within a learning space, inside a post, a user can highlight a text, on highlight it will display an icon to annotate that text. On clicking the icon, a pop up should appear with two items. The first being the highlighted text, and the second being a text field where user can enter their thoughts about the highlighted text.
